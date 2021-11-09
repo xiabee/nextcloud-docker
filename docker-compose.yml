@@ -1,0 +1,59 @@
+version: '3.4'
+services:
+
+  db: 
+    image: mariadb 
+    restart: unless-stopped 
+    expose: 
+     - "3306"
+    volumes:
+     - ./db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: set_your_password
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: set_your_username
+      MYSQL_PASSWORD: set_your_pass
+    command: [--transaction-isolation=READ-COMMITTED,--binlog-format=ROW,--innodb-file-per-table=1,--skip-innodb-read-only-compressed]
+    # to avoid innodb bugs
+
+  cache:
+    image: redis
+    restart: unless-stopped
+    expose:
+     - "6379"
+    volumes:
+     - ./cache:/data
+    command: redis-server --requirepass 'redis_password'
+
+  app:
+    image: nextcloud:fpm
+    restart: unless-stopped
+    expose:
+     - "9000"
+    volumes:
+     - ./app/html:/var/www/html
+     - ./app/data:/var/www/html/data
+     - ./app/config:/var/www/html/config
+     - ./app/custom_apps:/var/www/html/custom_apps
+    links:
+     - db:db
+     - cache:cache
+    depends_on:
+     - db
+     - cache
+
+  proxy:
+    image: nginx
+    restart: unless-stopped
+    expose:
+      - "80"
+    ports:
+     - 5000:443
+    volumes:
+     - ./app/html:/var/www/html
+     - ./proxy/conf.d:/etc/nginx/conf.d:ro
+     - ./proxy/ssl_certs:/etc/nginx/ssl_certs:ro
+    links:
+     - app:app
+    depends_on:
+     - app
