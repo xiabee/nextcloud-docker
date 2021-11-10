@@ -103,3 +103,7 @@ docker-compose down
 # 停止并删除服务
 ```
 
+
+
+详细搭建过程与故障排除过程看这里：[https://blog.xiabee.cn/posts/nextcloud-docker/](https://blog.xiabee.cn/posts/nextcloud-docker/)
+
