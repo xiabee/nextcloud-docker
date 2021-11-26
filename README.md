@@ -1,4 +1,4 @@
-# nextcloud-docker
+# Nextcloud-Docker
 `nextcloud` + `nginx` + `redis` + `mariadb`一键式搭建个人云盘服务
 
 ### 目录结构
@@ -88,7 +88,11 @@ nextcloud_proxy_1   /docker-entrypoint.sh ngin ...   Up      0.0.0.0:5000->443/t
 
 #### 3. 注册网盘
 
-访问你服务器的`5000`端口，进入注册页面即可。
+* 访问你服务器的`5000`端口，进入注册页面即可。
+
+* 运行结果如下：
+
+  ![](https://tva1.sinaimg.cn/large/0084b03xly1gw9u7dpc1qj31hc0smazp.jpg)
 
 
 
@@ -102,6 +106,8 @@ docker-compose stop
 docker-compose down
 # 停止并删除服务
 ```
+
+
 
 
 
